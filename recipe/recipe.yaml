@@ -13,7 +13,7 @@ source:
 
 build:
   script: env JQPY_USE_SYSTEM_LIBS=1 python -m pip install . -vv
-  number: 0
+  number: 1
   skip:
     - win
 
@@ -34,7 +34,7 @@ requirements:
 tests:
   - python:
       imports:
-      - jq
+        - jq
       pip_check: true
 
 about:
