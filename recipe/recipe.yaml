@@ -1,7 +1,7 @@
 context:
   name: jq.py
   pypi_name: jq
-  version: "1.10.0"
+  version: "1.11.0"
 
 package:
   name: ${{ name|lower }}
@@ -9,7 +9,7 @@ package:
 
 source:
   url: https://pypi.org/packages/source/${{ pypi_name[0] }}/${{ pypi_name }}/${{ pypi_name }}-${{ version }}.tar.gz
-  sha256: fc38803075dbf1867e1b4ed268fef501feecb0c50f3555985a500faedfa70f08
+  sha256: 67f1032e3a61b4e5dcdd4e390527b0000db521ac9872b64517c83c5f71ef8450
 
 build:
   script: env JQPY_USE_SYSTEM_LIBS=1 python -m pip install . -vv
@@ -34,7 +34,7 @@ requirements:
 tests:
   - python:
       imports:
-      - jq
+        - jq
       pip_check: true
 
 about:
