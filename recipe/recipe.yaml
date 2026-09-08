@@ -40,6 +40,15 @@ tests:
       imports:
         - jq
       pip_check: true
+  - requirements:
+      run:
+        - pytest
+    files:
+      source:
+        - tests/
+        - tox.ini
+    script:
+      - pytest
 
 about:
   homepage: https://github.com/mwilliamson/jq.py
