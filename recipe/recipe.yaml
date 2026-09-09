@@ -27,6 +27,7 @@ requirements:
       then:
         - python
         - cross-python_${{ target_platform }}
+        - cython ==3.2.3
     - ${{ compiler('c') }}
     - ${{ stdlib('c') }}
   host:
