@@ -1,31 +1,40 @@
 context:
-  name: jq.py
-  pypi_name: jq
-  version: "1.10.0"
+  version: "1.12.0"
 
 package:
-  name: ${{ name|lower }}
+  name: jq.py
   version: ${{ version }}
 
 source:
-  url: https://pypi.org/packages/source/${{ pypi_name[0] }}/${{ pypi_name }}/${{ pypi_name }}-${{ version }}.tar.gz
-  sha256: fc38803075dbf1867e1b4ed268fef501feecb0c50f3555985a500faedfa70f08
+  url: https://pypi.org/packages/source/j/jq/jq-${{ version }}.tar.gz
+  sha256: 729b2d3418c8ca7dccfaa66b9fb7a98bec28474212650d27c5c04358ce26f55c
 
 build:
-  script: env JQPY_USE_SYSTEM_LIBS=1 python -m pip install . -vv
   number: 0
   skip:
     - win
+  script:
+    env:
+      JQPY_USE_SYSTEM_LIBS: "1"
+    content:
+      # make sure we're not using the vendored library
+      - rm -r deps
+      - ${{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
 
 requirements:
   build:
+    - if: build_platform != target_platform
+      then:
+        - python
+        - cross-python_${{ target_platform }}
+        - cython ==3.2.3
     - ${{ compiler('c') }}
     - ${{ stdlib('c') }}
   host:
     - python
+    - cython ==3.2.3
+    - setuptools >=43
     - pip
-    - setuptools
-    - cython ==3.2.1
     - jq
   run:
     - python
@@ -34,8 +43,17 @@ requirements:
 tests:
   - python:
       imports:
-      - jq
+        - jq
       pip_check: true
+  - requirements:
+      run:
+        - pytest
+    files:
+      source:
+        - tests/
+        - tox.ini
+    script:
+      - pytest
 
 about:
   homepage: https://github.com/mwilliamson/jq.py
@@ -50,3 +68,4 @@ about:
 extra:
   recipe-maintainers:
     - I-Al-Istannen
+    - mgorny
